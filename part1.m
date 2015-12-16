@@ -53,7 +53,7 @@ for file = 1 : 1 %length(files)
     
     % PART 2
     % Drawing.
-    for j = 1:1 %size(plates,1)
+    for j = 1:size(plates,1)
         im_crop = imcrop(im, plates(j,:));
         % figure, imshow(im_crop);
         rects = getRects(im_crop);
