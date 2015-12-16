@@ -31,7 +31,7 @@ groups = tmp;
 groupsSize = size(groups);
 %groupsSize
 %trainingCars
-%cl = c10lassify(sampling, training, groups);
+%cl = classify(sampling, training, groups);
 B = TreeBagger(100, training, groups);
 %  prediction = predict(B, sampling)
 
@@ -110,6 +110,8 @@ for file = 1 : numPlates
             im_caract = imcrop(im_crop, rects(i).BoundingBox);
             im_gray = rgb2gray(im_caract);
             im_caract = im2bw(im_caract, graythresh(im_caract));
+            im_caract = 1- im_caract;
+
 
             rects(i).BoundingBox(1) = rects(i).BoundingBox(1) + plates(j,1);
             rects(i).BoundingBox(2) = rects(i).BoundingBox(2) + plates(j,2);
@@ -117,12 +119,16 @@ for file = 1 : numPlates
             corners = corner(im_gray, 'MinimumEigenvalue');
             
             polar = getPolar(im_caract);
+            sampling(i,:) = [rects(i).EulerNumber, getMeans(im_caract, 10)];
+            %{
             sampling(i,:) = [...
                 rects(i).Eccentricity...
                 rects(i).EulerNumber...
                 rects(i).Extent...
                 rects(i).Ratio...
+                length(corners)...
                 ];
+            %}
 
         end
         

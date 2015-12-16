@@ -20,7 +20,7 @@ PLATES = [
     'AE123MK',
     'APTC69',
     'C260PB47',
-    '5089bzv,',
+    '5089BZV,',
 ]
 
 NUM_PLATES = len(PLATES)
