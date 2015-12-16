@@ -13,7 +13,8 @@ else
     numPlates = length(files);
 end
 
-for file = 1 : numPlates
+% for file = 1 : numPlates
+for file = 3 : 3
     im = imread(fullfile('matricules', files(file).name));
 
     % Binarization of our image.

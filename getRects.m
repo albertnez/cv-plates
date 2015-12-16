@@ -1,9 +1,6 @@
 function [ rects ] = getRects( im )
-% TODO: Get the letters by searching for regions with a height between
-% ~60% and 80% of the plate.
+    im_height = size(im, 1)
 
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
     level = graythresh(im)*1.1;  % In 1.1 we trust.
     im_bin = im2bw(im, level);
     
@@ -16,13 +13,14 @@ function [ rects ] = getRects( im )
     [L, n] = bwlabel (im_bin);
     props = regionprops(L, 'BoundingBox', 'Eccentricity', 'EulerNumber', 'Extent', 'Area', 'Perimeter');
     hold on;
-    % figure, imshow(im);
     for i = 1 : n
         p = props(i).Perimeter;
         a = props(i).Area;
         ratio = p*p/a;
         area = props(i).Area;
-        if ratio > 22.0 && ratio < 80.0
+        height = props(i).BoundingBox(4);
+        % TODO make the height ratio more precise.
+        if ratio > 22.0 && ratio < 80.0 && height/im_height < 0.9 && height/im_height > 0.5
             % rectangle('Position', props(i).BoundingBox, 'EdgeColor','red')
             rects(end+1).BoundingBox = props(i).BoundingBox(1:4);
             rects(end).Eccentricity = props(i).Eccentricity;
