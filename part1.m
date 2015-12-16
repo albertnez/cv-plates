@@ -57,7 +57,8 @@ for file = 1 : 1 %length(files)
         im_crop = imcrop(im, plates(j,:));
         % figure, imshow(im_crop);
         rects = getRects(im_crop);
-        size(rects,2);
+
+        plateId = ''
         for i = 1:size(rects,2)
             im_caract = imcrop(im_bin, rects(i).BoundingBox);
             rects(i).BoundingBox(1) = rects(i).BoundingBox(1) + plates(j,1);
@@ -83,11 +84,15 @@ for file = 1 : 1 %length(files)
         B = TreeBagger(15, training, groups);
        %  prediction = predict(B, sampling)
         
-        % To get the character plus the score:
-        [c, score] = predict(B, sampling);
-        if score < 0.45
-          c = '*';
+        [id, score] = predict(B, sampling);
+        % Test each character. Replace by '*' if not enough confidence
+        for c = 1:size(id,1)
+            s = max(score(c,:))
+            if s < 0.45
+                id{c} = '*'
+            end
         end
-        c
+        % Show image with plate id as title.
+        figure('Name', char(id)), imshow(im_crop);
     end
 end
