@@ -1,5 +1,5 @@
 function [ values ] = getPolar( im )
-    size(im)
+    size(im);
 
     B=bwboundaries(im,'noholes');
     if size(B) == 0

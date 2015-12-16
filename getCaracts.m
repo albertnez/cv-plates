@@ -12,7 +12,6 @@ function [ caracts ] = getCaracts( )
 
     for file = 1 : length(files)
         im = imread(fullfile('trainset', files(file).name));
-        files(file).name
     
         level = graythresh(im);
         im_bin = im2bw(im, level);

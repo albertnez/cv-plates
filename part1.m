@@ -93,13 +93,13 @@ for file = 1 : numPlates
             %rectangle('Position', rects(i).BoundingBox, 'EdgeColor', 'r');
             corners = corner(im_gray, 'MinimumEigenvalue');
             
-            polar = getPolar(im_caract)
+            polar = getPolar(im_caract);
             sampling(i,:) = [...
                 rects(i).Eccentricity...
                 rects(i).EulerNumber...
                 rects(i).Extent...
                 rects(i).Ratio...
-                ]
+                ];
 
         end
         % Classify caracters.
@@ -112,8 +112,8 @@ for file = 1 : numPlates
         tmp = [groups; groups; groups; groups; groups; groups; groups; groups; groups; groups; groups; groups; groups];
         groups = tmp;
         groupsSize = size(groups);
-        groupsSize
-        trainingCars
+        %groupsSize
+        %trainingCars
         %cl = c10lassify(sampling, training, groups);
         B = TreeBagger(100, training, groups);
        %  prediction = predict(B, sampling)
@@ -130,7 +130,7 @@ for file = 1 : numPlates
         figure('Name', char(id)), imshow(im_crop);
 
         if exportImages == 1
-            imwrite(im_crop, strcat('plate', int2str(file), '-', strjoin(id,''), '.jpg'))
+            imwrite(im_crop, strcat('plate', int2str(file), '-', strjoin(id,''), '.jpg'));
         end
     end
 end
