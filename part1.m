@@ -3,6 +3,7 @@ clear all
 
 files = dir(['matricules/' '*.jpg']);
 
+
 for file = 1 : 1 %length(files)
     im = imread(fullfile('matricules', files(file).name));
 
@@ -62,14 +63,14 @@ for file = 1 : 1 %length(files)
             rects(i).BoundingBox(1) = rects(i).BoundingBox(1) + plates(j,1);
             rects(i).BoundingBox(2) = rects(i).BoundingBox(2) + plates(j,2);
             rectangle('Position', rects(i).BoundingBox, 'EdgeColor', 'r');
-            polar = getPolar(im_caract);
+            
+            %polar = getPolar(im_caract);
             % [polar, slope] = getContourRepr(im_caract);
             sampling(i,:) = [
                 rects(i).Eccentricity,
                 rects(i).EulerNumber,
                 rects(i).Extent,
-                rects(i).Ratio,
-                hist
+                rects(i).Ratio
             ];
         end
         % Classify caracters.
@@ -77,7 +78,19 @@ for file = 1 : 1 %length(files)
         %training(end+1) = training(1);
         groups = ['0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 
             'B'; 'C'; 'D'; 'F'; 'G'; 'H'; 'J'; 'K'; 'L'; 'M'; 'N';
-            'P'; 'R'; 'S'; 'T'; 'V'; 'W'; 'X'; 'Y'; 'Z'];
+            'P'; 'R'; 'S'; 'T'; 'V'; 'W'; 'X'; 'Y'; 'Z';
+            '0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 
+            'B'; 'C'; 'D'; 'F'; 'G'; 'H'; 'J'; 'K'; 'L'; 'M'; 'N';
+            'P'; 'R'; 'S'; 'T'; 'V'; 'W'; 'X'; 'Y'; 'Z';
+            '0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 
+            'B'; 'C'; 'D'; 'F'; 'G'; 'H'; 'J'; 'K'; 'L'; 'M'; 'N';
+            'P'; 'R'; 'S'; 'T'; 'V'; 'W'; 'X'; 'Y'; 'Z';
+            '0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 
+            'B'; 'C'; 'D'; 'F'; 'G'; 'H'; 'J'; 'K'; 'L'; 'M'; 'N';
+            'P'; 'R'; 'S'; 'T'; 'V'; 'W'; 'X'; 'Y'; 'Z';
+            '0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 
+            'B'; 'C'; 'D'; 'F'; 'G'; 'H'; 'J'; 'K'; 'L'; 'M'; 'N';
+            'P'; 'R'; 'S'; 'T'; 'V'; 'W'; 'X'; 'Y'; 'Z';];
         %cl = c10lassify(sampling, training, groups);
         B = TreeBagger(15, training, groups);
        %  prediction = predict(B, sampling)
