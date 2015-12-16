@@ -1,6 +1,6 @@
 function [ caracts ] = getCaracts( )
     % Set to 1 to train with all the trainset data, 0 otherwise.
-    allTrainset = 0;
+    allTrainset = 1;
     
     if allTrainset
         files = dir(['trainset/' '*.png']);
@@ -10,7 +10,7 @@ function [ caracts ] = getCaracts( )
         N = 30;
     end
 
-    for file = 1 : 1 %length(files)
+    for file = 1 : length(files)
         im = imread(fullfile('trainset', files(file).name));
         files(file).name
     
