@@ -3,6 +3,8 @@ clear all
 
 % Wheter or not to process all plates.
 allPlates = 0
+% Whether an image with format plate-fileNumber-plateID.png is saved.
+exportImages = 0
 
 files = dir(['matricules/' '*.jpg']);
 
@@ -63,7 +65,7 @@ for file = 1 : 1
         else 
             props(j).Extent
             ratio
-            rectangle('Position', props(j).BoundingBox, 'FaceColor','r')
+            %rectangle('Position', props(j).BoundingBox, 'FaceColor','r')
         end     
     end
     hold off;
@@ -85,7 +87,7 @@ for file = 1 : 1
             im_caract = imcrop(im_bin, rects(i).BoundingBox);
             rects(i).BoundingBox(1) = rects(i).BoundingBox(1) + plates(j,1);
             rects(i).BoundingBox(2) = rects(i).BoundingBox(2) + plates(j,2);
-            rectangle('Position', rects(i).BoundingBox, 'EdgeColor', 'r');
+            %rectangle('Position', rects(i).BoundingBox, 'EdgeColor', 'r');
             corners = corner(im_caract);
             
             % polar = getPolar(im_caract);
@@ -118,5 +120,9 @@ for file = 1 : 1
         end
         % Show image with plate id as title.
         figure('Name', char(id)), imshow(im_crop);
+
+        if exportImages == 1
+            imwrite(im_crop, strcat('plate', int2str(file), '-', strjoin(id,''), '.png'))
+        end
     end
 end
