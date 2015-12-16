@@ -1,10 +1,19 @@
 close all
 clear all
 
+% Wheter or not to process all plates.
+allPlates = 0
+
 files = dir(['matricules/' '*.jpg']);
 
 
-for file = 1 : 1 %length(files)
+if allPlates == 0
+    numPlates = 1;
+else
+    numPlates = length(files);
+end
+
+for file = 1 : numPlates
     im = imread(fullfile('matricules', files(file).name));
 
     % Binarization of our image.
@@ -52,11 +61,16 @@ for file = 1 : 1 %length(files)
     hold off;
     
     % PART 2
-    % Drawing.
+    % For each plate
     for j = 1:size(plates,1)
         im_crop = imcrop(im, plates(j,:));
         % figure, imshow(im_crop);
         rects = getRects(im_crop);
+
+        % Filter if it does not contain 7 characters inside
+        if size(rects,2) ~= 7
+            continue
+        end
 
         plateId = '';
         for i = 1:size(rects,2)
@@ -90,7 +104,7 @@ for file = 1 : 1 %length(files)
         % Test each character. Replace by '*' if not enough confidence
         for c = 1:size(id,1)
             s = max(score(c,:));
-            if s < 0.45
+            if s < 0.25
                 id{c} = '*';
             end
         end
