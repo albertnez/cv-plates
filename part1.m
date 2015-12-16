@@ -15,7 +15,7 @@ end
 
 for file = 1 : numPlates
 %for file = 1 : 1
-    close all
+    close all;
 
     im = imread(fullfile('matricules', files(file).name));
 
@@ -27,7 +27,7 @@ for file = 1 : numPlates
     im_bin = bwfill(im_bin, 'holes');
     % Some initial opening.
     im_opened = imopen(im_bin, strel('square', 10));
-    figure, imshow(im)
+    figure, imshow(im);
 
     % LABELING
 
@@ -40,14 +40,14 @@ for file = 1 : numPlates
         ratio = props(i).MajorAxisLength / props(i).MinorAxisLength;
         if props(i).Extent < 0.50 || ratio < 2.8
             im_opened(L==i) = 0;
-        else
-            props(i).Extent
-            ratio
+        %else
+            %props(i).Extent
+            %ratio
         end
     end
     %figure, imshowpair(im_bin, im_opened, 'montage');
     
-    hold on
+    hold on;
     [L, n] = bwlabel (im_opened);
     props = regionprops(L, 'BoundingBox', 'Extent', 'Perimeter', 'Area');
     plates = [];
@@ -62,9 +62,9 @@ for file = 1 : numPlates
             rectangle('Position', props(j).BoundingBox, 'EdgeColor','r');
             plates(end+1,1:4) = props(j).BoundingBox(1:4);
             %plot(props(j).BoundingBox(:,1), props(j).BoundingBox(:,2), 'LineWidth', 3, 'Color', 'r')
-        else 
-            props(j).Extent
-            ratio
+        %else 
+            %props(j).Extent
+            %ratio
             %rectangle('Position', props(j).BoundingBox, 'FaceColor','r')
         end     
     end
@@ -85,27 +85,33 @@ for file = 1 : numPlates
         plateId = '';
         for i = 1:size(rects,2)
             im_caract = imcrop(im_crop, rects(i).BoundingBox);
+            im_gray = rgb2gray(im_caract);
             im_caract = im2bw(im_caract, graythresh(im_caract));
 
             rects(i).BoundingBox(1) = rects(i).BoundingBox(1) + plates(j,1);
             rects(i).BoundingBox(2) = rects(i).BoundingBox(2) + plates(j,2);
             %rectangle('Position', rects(i).BoundingBox, 'EdgeColor', 'r');
-            corners = corner(im_caract);
+            corners = corner(im_gray);
             
             polar = getPolar(im_caract);
+            rects(i).Eccentricity
+            rects(i).EulerNumber
+            rects(i).Extent
+            rects(i).Ratio
+            % length(corners)...
+            polar
             sampling(i,:) = [...
                 rects(i).Eccentricity...
                 rects(i).EulerNumber...
                 rects(i).Extent...
                 rects(i).Ratio...
-                length(corners)...
-                polar...
+                % length(corners)...
+                % polar...
                 ];
 
-            figure('Name', strcat('Euler: ', int2str(rects(i).EulerNumber))), imshow(im_caract);
         end
         % Classify caracters.
-        training = getCaracts()
+        training = getCaracts();
         %training(end+1) = training(1);
         groups = ['0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 
             'B'; 'C'; 'D'; 'F'; 'G'; 'H'; 'J'; 'K'; 'L'; 'M'; 'N';
@@ -114,12 +120,12 @@ for file = 1 : numPlates
         B = TreeBagger(100, training, groups);
        %  prediction = predict(B, sampling)
         
-        sampling
+        sampling;
         [id, score] = predict(B, sampling);
         % Test each character. Replace by '*' if not enough confidence
         for c = 1:size(id,1)
             s = max(score(c,:));
-            if s < 0.25
+            if s < 0.10
                 id{c} = '*';
             end
         end

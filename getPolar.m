@@ -3,7 +3,7 @@ function [ values ] = getPolar( im )
 
     B=bwboundaries(im,'noholes');
     if size(B) == 0
-        values = [0, 0, 0]
+        values = [0, 0, 0, 0, 0];
         return
     end
     contour=B{1};

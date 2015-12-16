@@ -1,5 +1,5 @@
 function [ rects ] = getRects( im )
-    im_height = size(im, 1)
+    im_height = size(im, 1);
 
     level = graythresh(im)*1.1;  % In 1.1 we trust.
     im_bin = im2bw(im, level);
@@ -27,9 +27,9 @@ function [ rects ] = getRects( im )
             rects(end).Extent = props(i).Extent;
             rects(end).EulerNumber = props(i).EulerNumber;
             rects(end).Ratio = ratio;
-        else
-            ratio
-            height/im_height
+        %else
+            %ratio
+            %height/im_height
         end
     end
     hold off;
