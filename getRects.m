@@ -20,8 +20,8 @@ function [ rects ] = getRects( im )
     for i = 1 : n
         p = props(i).Perimeter;
         a = props(i).Area;
-        ratio = p*p/a
-        area = props(i).Area
+        ratio = p*p/a;
+        area = props(i).Area;
         if ratio > 22.0 && ratio < 80.0
             % rectangle('Position', props(i).BoundingBox, 'EdgeColor','red')
             rects(end+1).BoundingBox = props(i).BoundingBox(1:4);

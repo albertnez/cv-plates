@@ -41,9 +41,9 @@ for file = 1 : 1 %length(files)
         a = props(j).Area;
         ratio = p*p/a;
         if ratio > 25.0 && ratio < 29.0
-            props(j).BoundingBox
+            props(j).BoundingBox;
             % Surround letters in plate
-            rectangle('Position', props(j).BoundingBox, 'EdgeColor','r')
+            rectangle('Position', props(j).BoundingBox, 'EdgeColor','r');
             plates(end+1,1:4) = props(j).BoundingBox(1:4);
             %plot(props(j).BoundingBox(:,1), props(j).BoundingBox(:,2), 'LineWidth', 3, 'Color', 'r')
         %else rectangle('Position', props(j).BoundingBox, 'FaceColor','r')
@@ -57,7 +57,7 @@ for file = 1 : 1 %length(files)
         im_crop = imcrop(im, plates(j,:));
         % figure, imshow(im_crop);
         rects = getRects(im_crop);
-        size(rects,2)
+        size(rects,2);
         for i = 1:size(rects,2)
             im_caract = imcrop(im_bin, rects(i).BoundingBox);
             rects(i).BoundingBox(1) = rects(i).BoundingBox(1) + plates(j,1);
