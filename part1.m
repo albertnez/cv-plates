@@ -104,11 +104,16 @@ for file = 1 : numPlates
         end
         % Classify caracters.
         training = getCaracts();
+        trainingCars = size(training);
         %training(end+1) = training(1);
-        groups = ['0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 
-            'B'; 'C'; 'D'; 'F'; 'G'; 'H'; 'J'; 'K'; 'L'; 'M'; 'N';
-            'P'; 'R'; 'S'; 'T'; 'V'; 'W'; 'X'; 'Y'; 'Z';];
-        goups = [groups groups groups groups];
+        groups = ['0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9';...
+            'B'; 'C'; 'D'; 'F'; 'G'; 'H'; 'J'; 'K'; 'L'; 'M'; 'N';...
+            'P'; 'R'; 'S'; 'T'; 'V'; 'W'; 'X'; 'Y'; 'Z'];
+        tmp = [groups; groups; groups; groups; groups; groups; groups; groups; groups; groups; groups; groups; groups];
+        groups = tmp;
+        groupsSize = size(groups);
+        groupsSize
+        trainingCars
         %cl = c10lassify(sampling, training, groups);
         B = TreeBagger(100, training, groups);
        %  prediction = predict(B, sampling)
