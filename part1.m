@@ -1,6 +1,6 @@
 clear all
 % Wheter or not to process all plates.
-allPlates = 1
+allPlates = 0
 % Whether an image with format plate-fileNumber-plateID.png is saved.
 exportImages = 1
 
@@ -84,32 +84,37 @@ for file = 1 : numPlates
 
         plateId = '';
         for i = 1:size(rects,2)
-            im_caract = imcrop(im_bin, rects(i).BoundingBox);
+            im_caract = imcrop(im_crop, rects(i).BoundingBox);
+            im_caract = im2bw(im_caract, graythresh(im_caract));
+
             rects(i).BoundingBox(1) = rects(i).BoundingBox(1) + plates(j,1);
             rects(i).BoundingBox(2) = rects(i).BoundingBox(2) + plates(j,2);
             %rectangle('Position', rects(i).BoundingBox, 'EdgeColor', 'r');
             corners = corner(im_caract);
             
-            % polar = getPolar(im_caract);
+            polar = getPolar(im_caract);
+            sampling(i,:) = [...
+                rects(i).Eccentricity...
+                rects(i).EulerNumber...
+                rects(i).Extent...
+                rects(i).Ratio...
+                length(corners)...
+                polar...
+                ];
 
-            sampling(i,:) = [
-                rects(i).Eccentricity,
-                rects(i).EulerNumber,
-                rects(i).Extent,
-                rects(i).Ratio,
-                length(corners)
-            ];
+            figure('Name', strcat('Euler: ', int2str(rects(i).EulerNumber))), imshow(im_caract);
         end
         % Classify caracters.
-        training = getCaracts();
+        training = getCaracts()
         %training(end+1) = training(1);
         groups = ['0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9'; 
             'B'; 'C'; 'D'; 'F'; 'G'; 'H'; 'J'; 'K'; 'L'; 'M'; 'N';
             'P'; 'R'; 'S'; 'T'; 'V'; 'W'; 'X'; 'Y'; 'Z';];
         %cl = c10lassify(sampling, training, groups);
-        B = TreeBagger(15, training, groups);
+        B = TreeBagger(100, training, groups);
        %  prediction = predict(B, sampling)
         
+        sampling
         [id, score] = predict(B, sampling);
         % Test each character. Replace by '*' if not enough confidence
         for c = 1:size(id,1)

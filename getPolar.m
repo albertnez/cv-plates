@@ -27,12 +27,12 @@ function [ values ] = getPolar( im )
         end
     end
     polar=polar./max(polar);  % Normalize.
-    filteredPolar = []
-    for i = 1:N
+    filteredPolar = [];
+    for i = 1:360
         if polar(i) >= 0
             filteredPolar(end+1) = polar(i);
         end
     end
-    values = prctile(filteredPolar, [25, 50, 75]);
+    values = prctile(filteredPolar, [0, 25, 50, 75, 100]);
 end
 

@@ -10,9 +10,6 @@ function [ caracts ] = getCaracts( )
         N = 30;
     end
 
-    numCaracts = 5;
-    caracts = zeros(N, numCaracts);
-    
     for file = 1 : 1 %length(files)
         im = imread(fullfile('trainset', files(file).name));
         files(file).name
@@ -23,16 +20,20 @@ function [ caracts ] = getCaracts( )
         [L, n] = bwlabel (im_bin);
         
         props = regionprops(L, 'BoundingBox', 'Eccentricity', 'EulerNumber', 'Extent', 'Area', 'Perimeter');
-        corners = corner(im_bin);
         
         for i = 1 : n
+            im_caract = imcrop(im_bin, props(i).BoundingBox);
+            polar = getPolar(im_caract);
+            corners = corner(im_caract);
             p = props(i).Perimeter;
-            caracts(i,:) = [
-                props(i).Eccentricity,
-                props(i).EulerNumber,
-                props(i).Extent,
-                p*p / props(i).Area,
-                length(corners)
+
+            caracts(i,:) = [...
+                props(i).Eccentricity...
+                props(i).EulerNumber...
+                props(i).Extent...
+                p*p / props(i).Area...
+                length(corners)...
+                polar...
                 ];
         end    
     end
