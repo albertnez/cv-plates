@@ -1,10 +1,8 @@
-close all
 clear all
-
 % Wheter or not to process all plates.
-allPlates = 0
+allPlates = 1
 % Whether an image with format plate-fileNumber-plateID.png is saved.
-exportImages = 0
+exportImages = 1
 
 files = dir(['matricules/' '*.jpg']);
 
@@ -15,8 +13,10 @@ else
     numPlates = length(files);
 end
 
-% for file = 1 : numPlates
-for file = 1 : 1
+for file = 1 : numPlates
+%for file = 1 : 1
+    close all
+
     im = imread(fullfile('matricules', files(file).name));
 
     % Binarization of our image.
@@ -122,7 +122,7 @@ for file = 1 : 1
         figure('Name', char(id)), imshow(im_crop);
 
         if exportImages == 1
-            imwrite(im_crop, strcat('plate', int2str(file), '-', strjoin(id,''), '.png'))
+            imwrite(im_crop, strcat('plate', int2str(file), '-', strjoin(id,''), '.jpg'))
         end
     end
 end
