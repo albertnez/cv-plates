@@ -1,6 +1,11 @@
 function [ values ] = getPolar( im )
+    size(im)
 
     B=bwboundaries(im,'noholes');
+    if size(B) == 0
+        values = [0, 0, 0]
+        return
+    end
     contour=B{1};
     N=size(contour,1);
 
@@ -11,7 +16,7 @@ function [ values ] = getPolar( im )
     for i=1:N
         X=contour(i,2)-centroid(2);
         Y=contour(i,1)-centroid(1);
-        angle = round(atan2d(Y,X)/24);
+        angle = round(atan2d(Y,X));
         if angle < 360
             angle = angle+360;
         end

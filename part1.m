@@ -58,7 +58,7 @@ for file = 1 : 1 %length(files)
         % figure, imshow(im_crop);
         rects = getRects(im_crop);
 
-        plateId = ''
+        plateId = '';
         for i = 1:size(rects,2)
             im_caract = imcrop(im_bin, rects(i).BoundingBox);
             rects(i).BoundingBox(1) = rects(i).BoundingBox(1) + plates(j,1);
@@ -66,8 +66,8 @@ for file = 1 : 1 %length(files)
             rectangle('Position', rects(i).BoundingBox, 'EdgeColor', 'r');
             corners = corner(im_caract);
             
-            %polar = getPolar(im_caract);
-            % [polar, slope] = getContourRepr(im_caract);
+            % polar = getPolar(im_caract);
+
             sampling(i,:) = [
                 rects(i).Eccentricity,
                 rects(i).EulerNumber,
@@ -89,9 +89,9 @@ for file = 1 : 1 %length(files)
         [id, score] = predict(B, sampling);
         % Test each character. Replace by '*' if not enough confidence
         for c = 1:size(id,1)
-            s = max(score(c,:))
+            s = max(score(c,:));
             if s < 0.45
-                id{c} = '*'
+                id{c} = '*';
             end
         end
         % Show image with plate id as title.
