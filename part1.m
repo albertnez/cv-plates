@@ -31,11 +31,15 @@ for file = 1 : numPlates
 
     % Label cells.
     [L, n] = bwlabel (im_opened);
-    props = regionprops(L, 'Extent');
+    props = regionprops(L, 'Extent', 'MajorAxisLength', 'MinorAxisLength');
     % Filter those rectangles that do not fit as a plate.
     for i = 1 : n
-        if props(i).Extent < 0.65
+        % This ratio says how rectangular the thing is.
+        ratio = props(i).MajorAxisLength / props(i).MinorAxisLength;
+        if props(i).Extent < 0.50 || ratio < 3.0
             im_opened(L==i) = 0;
+        else
+            props(i).Extent
         end
     end
     %figure, imshowpair(im_bin, im_opened, 'montage');
@@ -49,13 +53,15 @@ for file = 1 : numPlates
         p = props(j).Perimeter;
         a = props(j).Area;
         ratio = p*p/a;
-        if ratio > 25.0 && ratio < 29.0
+        if ratio > 20.0 && ratio < 35.0
             props(j).BoundingBox;
             % Surround letters in plate
             rectangle('Position', props(j).BoundingBox, 'EdgeColor','r');
             plates(end+1,1:4) = props(j).BoundingBox(1:4);
             %plot(props(j).BoundingBox(:,1), props(j).BoundingBox(:,2), 'LineWidth', 3, 'Color', 'r')
-        %else rectangle('Position', props(j).BoundingBox, 'FaceColor','r')
+        %else 
+            %ratio
+            %rectangle('Position', props(j).BoundingBox, 'FaceColor','r')
         end     
     end
     hold off;
