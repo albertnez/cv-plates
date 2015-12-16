@@ -10,7 +10,7 @@ function [ caracts ] = getCaracts( )
         N = 30;
     end
 
-    numCaracts = 4;
+    numCaracts = 5;
     caracts = zeros(N, numCaracts);
     
     for file = 1 : 1 %length(files)
@@ -23,6 +23,7 @@ function [ caracts ] = getCaracts( )
         [L, n] = bwlabel (im_bin);
         
         props = regionprops(L, 'BoundingBox', 'Eccentricity', 'EulerNumber', 'Extent', 'Area', 'Perimeter');
+        corners = corner(im_bin);
         
         for i = 1 : n
             p = props(i).Perimeter;
@@ -30,7 +31,8 @@ function [ caracts ] = getCaracts( )
                 props(i).Eccentricity,
                 props(i).EulerNumber,
                 props(i).Extent,
-                p*p / props(i).Area
+                p*p / props(i).Area,
+                length(corners)
                 ];
         end    
     end

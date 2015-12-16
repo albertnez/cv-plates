@@ -64,6 +64,7 @@ for file = 1 : 1 %length(files)
             rects(i).BoundingBox(1) = rects(i).BoundingBox(1) + plates(j,1);
             rects(i).BoundingBox(2) = rects(i).BoundingBox(2) + plates(j,2);
             rectangle('Position', rects(i).BoundingBox, 'EdgeColor', 'r');
+            corners = corner(im_caract);
             
             %polar = getPolar(im_caract);
             % [polar, slope] = getContourRepr(im_caract);
@@ -71,7 +72,8 @@ for file = 1 : 1 %length(files)
                 rects(i).Eccentricity,
                 rects(i).EulerNumber,
                 rects(i).Extent,
-                rects(i).Ratio
+                rects(i).Ratio,
+                length(corners)
             ];
         end
         % Classify caracters.
