@@ -4,6 +4,8 @@ allPlates = 1
 % Whether an image with format plate-fileNumber-plateID.png is saved.
 exportImages = 1
 
+numImagesTrainset = 13
+
 files = dir(['matricules/' '*.jpg']);
 
 
@@ -109,7 +111,11 @@ for file = 1 : numPlates
         groups = ['0'; '1'; '2'; '3'; '4'; '5'; '6'; '7'; '8'; '9';...
             'B'; 'C'; 'D'; 'F'; 'G'; 'H'; 'J'; 'K'; 'L'; 'M'; 'N';...
             'P'; 'R'; 'S'; 'T'; 'V'; 'W'; 'X'; 'Y'; 'Z'];
-        tmp = [groups; groups; groups; groups; groups; groups; groups; groups; groups; groups; groups; groups; groups];
+
+        tmp = [];
+        for i = 1 : numImagesTrainset
+            tmp = [tmp; groups];
+        end
         groups = tmp;
         groupsSize = size(groups);
         %groupsSize

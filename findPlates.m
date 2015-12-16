@@ -4,8 +4,6 @@ function [ plates ] = findPlates( im )
 % rectangle: [upper_left_x upper_left_y width height]
     plates = [];
     
-    plates
-    
     level = graythresh(im)*1.1;
     im_bin = im2bw(im, level);
     im_bin = imclearborder(im_bin);
