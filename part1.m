@@ -91,23 +91,15 @@ for file = 1 : numPlates
             rects(i).BoundingBox(1) = rects(i).BoundingBox(1) + plates(j,1);
             rects(i).BoundingBox(2) = rects(i).BoundingBox(2) + plates(j,2);
             %rectangle('Position', rects(i).BoundingBox, 'EdgeColor', 'r');
-            corners = corner(im_gray);
+            corners = corner(im_gray, 'MinimumEigenvalue');
             
-            polar = getPolar(im_caract);
-            rects(i).Eccentricity
-            rects(i).EulerNumber
-            rects(i).Extent
-            rects(i).Ratio
-            % length(corners)...
-            polar
+            polar = getPolar(im_caract)
             sampling(i,:) = [...
                 rects(i).Eccentricity...
                 rects(i).EulerNumber...
                 rects(i).Extent...
                 rects(i).Ratio...
-                % length(corners)...
-                % polar...
-                ];
+                ]
 
         end
         % Classify caracters.
@@ -120,7 +112,6 @@ for file = 1 : numPlates
         B = TreeBagger(100, training, groups);
        %  prediction = predict(B, sampling)
         
-        sampling;
         [id, score] = predict(B, sampling);
         % Test each character. Replace by '*' if not enough confidence
         for c = 1:size(id,1)
