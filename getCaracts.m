@@ -1,13 +1,21 @@
 function [ caracts ] = getCaracts( )
+    % Set to 1 to train with all the trainset data, 0 otherwise.
+    allTrainset = 0;
     
-    files = dir(['trainset/' '*.png']);
-   
+    if allTrainset
+        files = dir(['trainset/' '*.png']);
+        N = 30*length(files);
+    else
+        files = dir(['trainset/original.png']);
+        N = 30;
+    end
+
     numCaracts = 4;
-    N = 30*length(files);
     caracts = zeros(N, numCaracts);
     
     for file = 1 : 1 %length(files)
         im = imread(fullfile('trainset', files(file).name));
+        files(file).name
     
         level = graythresh(im);
         im_bin = im2bw(im, level);
@@ -17,10 +25,6 @@ function [ caracts ] = getCaracts( )
         props = regionprops(L, 'BoundingBox', 'Eccentricity', 'EulerNumber', 'Extent', 'Area', 'Perimeter');
         
         for i = 1 : n
-            % Histogram
-            im_crop = imcrop(im, props(i).BoundingBox);
-            
-
             p = props(i).Perimeter;
             caracts(i,:) = [
                 props(i).Eccentricity,
