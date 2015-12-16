@@ -26,7 +26,8 @@ PLATES = [
 NUM_PLATES = len(PLATES)
 
 if __name__ == '__main__':
-
+    good = 0
+    total = 0
     for i in range(1, NUM_PLATES):
         f = glob.glob('plate{0}-*'.format(i))
         if not f:
@@ -35,4 +36,7 @@ if __name__ == '__main__':
             f = f[0].replace('plate{0}-'.format(i),'')[:-4]
             sm = sum(map(lambda u : int(u[0] == u[1]), zip(f, PLATES[i])))
             print('Correct matches between plate{0}-{1} and {2} = {3}'.format(i, f, PLATES[i], sm))
+            good += sm
+            total += len(PLATES[i])
+    print('Total number of characters recognized = {0} / {1}'.format(good, total))
 
